@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--
+TSOS - LINE DRAWING GENERATOR
+just draws nonsense lines on a canvas
+made by tyminator
+-->
+<meta charset="UTF-8">
+<html>
+<head>
+	<title>Line Drawing Generator</title>
+</head>
+<style>
+	body{
+		background-color: black;
+		color: white;
+		font-family: monospace;
+		text-align: center;
+	}
+	input[type=number]{
+		width:100px;
+	}
+</style>
+<body>
+	<h1>Line Drawing Generator</h1>
+	<canvas id="cv" height="517" width="517">yo, your browser doesn't support the canvas.</canvas>
+	<p></p>
+	<label for="lineCount">Line count: </label>
+	<input type="number" value="10" id="lineCount"></input>
+	<script>
+	var cv = document.getElementById("cv");
+	var cvWid = cv.width - 5;
+	var cvHei = cv.height - 5;
+	var cvDraw = cv.getContext("2d");
+	var lineCount;
+	function colorRand(){
+		var colOut = "rgb(";
+		for(var i = 0; i < 3; i++){
+			colOut += (Math.floor((Math.random() * 255) + 0)).toString();
+			if(i < 2){
+				colOut += ","
+			}
+		}
+		colOut += ")";
+		return colOut;
+	}
+	function drawing(){
+		lineCount = document.getElementById("lineCount").value;
+		cvDraw.lineWidth = 3;
+		cvDraw.clearRect(0,0,cvWid,cvHei);
+		for(var i = 0; i < lineCount; i++){
+			cvDraw.beginPath();
+			cvDraw.strokeStyle = colorRand();
+			cvDraw.moveTo((Math.random() * cvWid) + 2.5, (Math.random() * cvHei) + 2.5);
+			cvDraw.lineTo((Math.random() * cvWid) + 2.5, (Math.random() * cvHei) + 2.5);
+			cvDraw.stroke();
+		}
+		cvDraw.beginPath();
+		cvDraw.rect(0,0,cvWid + 5,cvHei + 5);
+		cvDraw.lineWidth = 10;
+		cvDraw.strokeStyle = "#ffffff";
+		cvDraw.stroke();
+	}
+	drawing();
+	setInterval(drawing, 5000);
+	</script>
+</body>
+</html>

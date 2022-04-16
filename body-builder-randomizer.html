@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+TSOS - IDEAL BODY GENERATOR (2022-04-15)
+generates random parameters for 
+bodyvisualizer.com
+made by tyminator
+-->
+<meta charset="UTF-8">
+<html>
+<head>
+	<title>IDEAL BODY GENERATOR</title>
+</head>
+
+<style>
+	body{
+		background-color: black;
+		color: white;
+		font-family: monospace;
+		text-align: center;
+	}
+</style>
+
+<body>
+	<h1>IDEAL BODY GENERATOR</h1>
+	<button id="genA" onclick="generate(2)">Generate</button>
+	<button id="genM" onclick="generate(0)">Gen. Male</button>
+	<button id="genF" onclick="generate(1)">Gen. Female</button>
+	<br>
+	<a href=https://bodyvisualizer.com>Website</a>
+	<input type="checkbox" id="xtmode"></input>
+	<label for="xtmode">Extreme Mode</label>
+	<h2 id="genoutput"></h2>
+	<canvas id="colorout" width="100" height="20">yo, this isn't supported</canvas>
+	<script>
+		var outText = document.getElementById("genoutput");
+		var types = [
+			"Height: ", "Weight: ", "Chest: ", "Waist: ",
+			"Hips: ", "Inseam: ", "Exercise: "
+		];
+		// wow this is horrible
+		var mRanges = [148,214,27,216,64,149,49,140,74,139,60,104,0,20];
+		var fRanges = [137,199,27,125,56,139,38,123,67,146,57,99,0,20];
+		var xtmode = document.getElementById("xtmode");
+		var canvas = document.getElementById("colorout");
+		var c = canvas.getContext("2d");
+		var cWidth = canvas.width;
+		var cHeight = canvas.height;
+		// wow this is REALLY horrible
+		function genColor(){
+			switch(Math.floor(Math.random() * 6)){
+				case 0:
+					genColMain("rgb(255,125,", ")");
+					break;
+				case 1:
+					genColMain("rgb(125,255,", ")");
+					break;
+				case 2:
+					genColMain("rgb(255,", ",125)");
+					break;
+				case 3:
+					genColMain("rgb(125,", ",255)");
+					break;
+				case 4:
+					genColMain("rgb(", ",255,125)");
+					break;
+				case 5:
+					genColMain("rgb(", ",125,255)");
+					break;
+			}
+		}
+		
+		function genColMain(outp1, outp2){
+			var colTemp = Math.floor((Math.random() * 131) + 125);
+			var colOutput = outp1 + colTemp + outp2;
+			c.fillStyle = colOutput;
+			c.rect(0,0,cWidth,cHeight);
+			c.fill();
+		}
+		
+		function generate(bodytype){
+		var output = "";
+			switch(bodytype){
+				case 0:
+					var ranges = mRanges;
+					output += "(M)<br>";
+					break;
+				case 1:
+					var ranges = fRanges;
+					output += "(F)<br>";
+					break;
+				case 2:
+					if(Math.round(Math.random()) == 0){
+						var ranges = mRanges;
+						output += "(M)<br>";
+					} else {
+						var ranges = fRanges
+						output += "(F)<br>";
+					}
+			}
+			for(var i = 0; i < (ranges.length - 1); i += 2){
+				if(xtmode.checked){
+					switch(Math.round(Math.random())){
+						case 0:
+							output += (
+								types[i / 2] +
+								ranges[i].toString() +
+								" (Low) <br>"
+							);
+							break;
+						case 1:
+							output += (
+								types[i / 2] +
+								ranges[i + 1].toString() +
+								" (High) <br>"
+							);
+							break;
+					}
+				} else {
+					// you win younger me, because i've got
+					// no idea what's going on here but it
+					// somehow gets it right
+					output += (
+						types[i / 2] +
+						(Math.floor((Math.random() * (ranges[i + 1] -
+							(ranges [i] - 1))) + ranges[i])).toString() +
+						"<br>"
+					);
+				}
+			}
+			output += "Color:";
+			outText.innerHTML = output;
+			genColor();
+		}
+	</script>
+</body>
+</html>

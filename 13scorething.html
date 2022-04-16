@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<!--
+TSOS - 5 DICE SCOREBOARD (2022-04-15)
+automatic scoreboard for the "5 dice" game
+made by tyminator
+-->
+<meta charset="UTF-8">
+<html>
+<style>
+	body{
+		background-color: black;
+		font-family: "monospace";
+		color: white;
+		text-align: center;
+	}
+	input[type=number]{
+		width: 53px;
+	}
+	select{
+		width: 59px;
+	}
+	input[type=button],
+	input[type=reset]{
+		width: 83px;
+	}
+</style>
+<head>
+	<title>5 Dice Scoreboard</title>
+</head>
+
+<body>
+<!--Score form-->
+<form id="mainform">
+	<label for="ones">1s</label>
+	<select id="ones">
+		<option>Ent.</option>
+		<option value="0">0</option>
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+	</select>
+	<label for="twos">2s</label>
+	<select id="twos">
+		<option>Ent.</option>
+		<option value="0">0</option>
+		<option value="2">2</option>
+		<option value="4">4</option>
+		<option value="6">6</option>
+		<option value="8">8</option>
+		<option value="10">10</option>
+	</select>
+	<br>
+	<label for="threes">3s</label>
+	<select id="threes">
+		<option>Ent.</option>
+		<option value="0">0</option>
+		<option value="3">3</option>
+		<option value="6">6</option>
+		<option value="9">9</option>
+		<option value="12">12</option>
+		<option value="15">15</option>
+	</select>
+	<label for="fours">4s</label>
+	<select id="fours">
+		<option>Ent.</option>
+		<option value="0">0</option>
+		<option value="4">4</option>
+		<option value="8">8</option>
+		<option value="12">12</option>
+		<option value="16">16</option>
+		<option value="20">20</option>
+	</select>
+	<br>
+	<label for="fives">5s</label>
+	<select id="fives">
+		<option>Ent.</option>
+		<option value="0">0</option>
+		<option value="5">5</option>
+		<option value="10">10</option>
+		<option value="15">15</option>
+		<option value="20">20</option>
+		<option value="25">25</option>
+	</select>
+	<label for="sixes">6s</label>
+	<select id="sixes">
+		<option>Ent.</option>
+		<option value="0">0</option>
+		<option value="6">6</option>
+		<option value="12">12</option>
+		<option value="18">18</option>
+		<option value="24">24</option>
+		<option value="30">30</option>
+	</select>
+	<br>
+	
+	<label for="3k">3K</label>
+	<input type="number" id="3k" min="0" max="30"></input>
+	<label for="4k">4K</label>
+	<input type="number" id="4k" min="0" max="30"></input>
+	<br>
+	<label for="fh">FH</label>
+	<input type="radio" id="fht" name="fh" value="Y">Y</input>
+	<input type="radio" id="fhf" name="fh">N</input>
+	<br>
+	<label for="sm">SM</label>
+	<input type="radio" id="smt" name="sm" value="Y">Y</input>
+	<input type="radio" id="smf" name="sm">N</input>
+	<br>
+	<label for="la">LA</label>
+	<input type="radio" id="lat" name="la" value="Y">Y</input>
+	<input type="radio" id="laf" name="la">N</input>
+	<br>
+	<label for="5k">5K</label>
+	<input type="radio" id="5kt" name="5k" value="Y">Y</input>
+	<input type="radio" id="5kf" name="5k">N</input>
+	<br>
+	<label for="ch">CH</label>
+	<input type="number" id="ch" min="5" max="30"></input>
+	<label for="5b">5B</label>
+	<select id="5b">
+		<option value="0">0</option>
+		<option value="1">100</option>
+		<option value="2">200</option>
+		<option value="3">300</option>
+		<option value="4">400</option>
+		<option value="5">500</option>
+		<option value="6">600</option>
+		<option value="7">700</option>
+		<option value="8">800</option>
+		<option value="9">900</option>
+		<option value="10">1000</option>
+		<option value="11">1100</option>
+		<option value="12">1200</option>
+	</select>
+	<br>
+	<input type="button" onclick=processScore() value="Finish"></input>
+	<input type="reset">
+	
+	<p id="sectionout">Upper Score:<br>Upper Bonus:<br>Lower Score:<br></p>
+	<h1 id="scoreoutput">Score:</h1>
+	<label for="misccounter">Misc. Counter</label>
+	<input type="number" id="misccounter"></input>
+</form>
+<script>
+var form = document.getElementById("mainform");
+	function processScore(){
+		var bonus = 0;
+		var form = document.getElementById("mainform");
+		var score = 0, upperscore = 0, lowerscore = 0;
+		
+		// Calculates lower score
+		for(var i = 0; i <= 5; i++){
+			upperscore += parseInt(form.elements[i].value);
+		}
+		if (upperscore >= 63){
+			bonus = 35
+		}
+		
+		// Calculates lower score
+		lowerscore += (
+			parseInt(form.elements[6].value) +
+			parseInt(form.elements[7].value)
+		);
+		checkPoints = [25, 30, 40, 50];
+		for(var i = 0; i < 4; i++){
+			var formIndex = (i * 2) + 8
+			if(form.elements[formIndex].checked == true){
+				lowerscore += checkPoints[i];
+			}
+		}
+		lowerscore += (
+			parseInt(form.elements[16].value) +
+			(parseInt(form.elements[17].value) * 100)
+		);
+		
+		// Gets total score
+		score = upperscore + lowerscore + bonus;
+		if(isNaN(score)){
+			document.getElementById("scoreoutput").innerHTML = "Score: Incomplete!";
+		} else {
+			if(bonus == 35){
+				document.getElementById("sectionout").innerHTML = (
+					"Upper Score: " + upperscore +
+					"<br>Upper Bonus: 35<br>Lower Score: " +
+					lowerscore
+				);
+			} else {
+				document.getElementById("sectionout").innerHTML = (
+					"Upper Score: " + upperscore +
+					"<br>Upper Bonus: 0<br>Lower Score: " + 
+					lowerscore
+				);
+			}
+			document.getElementById("scoreoutput").innerHTML = "Score: " + score;
+		}
+	}
+</script>
+</body>
+</html>

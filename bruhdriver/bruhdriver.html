@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!--
+TSOS - BRUHDRIVER
+webdriver torso, but bruh sound effects
+made by tyminator
+-->
+<meta charset="UTF-8">
+<html>
+<head>
+	<title>Bruhdriver Torso</title>
+</head>
+
+<style>
+	body{
+		background-color: black;
+		font-family: monospace;
+		color: white;
+		text-align: center;
+	}
+</style>
+
+<body>
+	<canvas id="cv" width="640" height="360">yo this isn't supported</canvas>
+	<br>
+	<label for="fuck">FUCK</label>
+	<input type="checkbox" id="fuck" />
+	<script>
+		// Setup
+		var cv = document.getElementById("cv");
+		var c = cv.getContext("2d");
+		var slide = 0;
+
+		// Bruh sounds
+		var bruhs = [
+			new Audio("bruhs/bruh01.wav"),
+			new Audio("bruhs/bruh02.wav"),
+			new Audio("bruhs/bruh03.wav"),
+			new Audio("bruhs/bruh04.wav"),
+			new Audio("bruhs/bruh05.wav"),
+			new Audio("bruhs/bruh06.wav"),
+			new Audio("bruhs/bruh07.wav"),
+			new Audio("bruhs/bruh08.wav"),
+			new Audio("bruhs/bruh09.wav"),
+			new Audio("bruhs/bruh10.wav"),
+			new Audio("bruhs/bruh11.wav"),
+			new Audio("bruhs/bruh12.wav"),
+			new Audio("bruhs/bruh13.wav"),
+			new Audio("bruhs/bruh14.wav"),
+			new Audio("bruhs/bruh15.wav"),
+			new Audio("bruhs/bruh16.wav"),
+			new Audio("bruhs/bruh17.wav"),
+			new Audio("bruhs/bruh18.wav"),
+			new Audio("bruhs/bruh19.wav"),
+			new Audio("bruhs/bruh20.wav"),
+			new Audio("bruhs/bruh21.wav"),
+			new Audio("bruhs/bruh22.wav"),
+			new Audio("bruhs/bruh23.wav"),
+			new Audio("bruhs/bruh24.wav"),
+			new Audio("bruhs/bruh25.wav")
+		]
+
+		// FUCK sounds
+		var fuck = [
+			new Audio("fuck/21.mp3"),
+			new Audio("fuck/ahhh.mp3"),
+			new Audio("fuck/alarm.mp3"),
+			new Audio("fuck/amongusyell.mp3"),
+			new Audio("fuck/bababooey.mp3"),
+			new Audio("fuck/bbnbhd.mp3"),
+			new Audio("fuck/bruh.mp3"),
+			new Audio("fuck/downey.mp3"),
+			new Audio("fuck/goat.mp3"),
+			new Audio("fuck/fart1.mp3"),
+			new Audio("fuck/flightlaugh.mp3"),
+			new Audio("fuck/flightscream.mp3"),
+			new Audio("fuck/fnaf.mp3"),
+			new Audio("fuck/fuck.mp3"),
+			new Audio("fuck/inception.mp3"),
+			new Audio("fuck/keem.mp3"),
+			new Audio("fuck/mgsalert.mp3"),
+			new Audio("fuck/nownownow.mp3"),
+			new Audio("fuck/omg.mp3"),
+			new Audio("fuck/pizzahere.mp3"),
+			new Audio("fuck/reverbfart.mp3"),
+			new Audio("fuck/shocked.mp3"),
+			new Audio("fuck/skibidi.mp3"),
+			new Audio("fuck/swaows.mp3"),
+			new Audio("fuck/tacobell.mp3"),
+			new Audio("fuck/vineboom.mp3"),
+			new Audio("fuck/waterphone.mp3"),
+			new Audio("fuck/wifi.mp3")
+		]
+		
+		// Draws randomized rectangle
+		function randRect(color){
+			randX = Math.random() * cv.width;
+			randY = Math.random() * cv.height;
+			randWidth = Math.random() * cv.width - randX;
+			randHeight = Math.random() * cv.height - randY;
+			c.fillStyle = color;
+			c.fillRect(randX, randY, randWidth, randHeight);
+		}
+		
+		// Generates frame
+		function generate(){
+			c.fillStyle = "#ffffff";
+			c.fillRect(0, 0, cv.width, cv.height);
+			fuckOn = document.getElementById("fuck").checked;
+			randRect("#0000ff");
+			randRect("#ff0000");
+			c.fillStyle = "#000000";
+			c.font = "16px VCR OSD Mono"
+			c.fillText("bruhdriver.html - slide " +
+				slide.toString().padStart(4, "0"), 20, cv.height - 20
+			);
+			slide++;
+			if (slide >= 10000){slide = 0;}
+			if(fuckOn){
+				randSound = Math.floor(Math.random() * fuck.length);
+				fuck[randSound].play();
+				console.log(fuck[randSound]);
+			} else {
+				bruhs[Math.floor(Math.random() * bruhs.length)].play();
+			}
+		}
+		
+		// Hit em with that yoinky sploinky
+		setInterval(generate, 1000)
+	</script>
+</body>
+</html>

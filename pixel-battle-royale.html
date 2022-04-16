@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--
+TSOS - PIXEL BATTLE ROYALE (2022-04-15)
+a pixels fighting clone, but every
+pixels starts with a random color
+made by tyminator
+-->
+<meta charset="UTF-8">
+<html>
+<head>
+<title>Pixel Royale</title>
+</head>
+
+<style>
+	body{
+		background-color: black;
+		color: white;
+		font-family: monospace;
+		text-align: center;
+	}
+	button {width: 100px}
+</style>
+
+<body>
+<h1>PIXEL BATTLE ROYALE</h1>
+<canvas width=480 height=480 id="battle">YO UPDATE YOUR BROWSER</canvas>
+<br>
+<button onclick="reset()">Reset</button>
+<br>
+<input type="checkbox" id="smol"></input>
+<label for="smol">Smaller Mode (48x48)</label>
+<br>
+<h3 id="agg">Aggression:</h3>
+<script>
+var cv = document.getElementById("battle");
+var c = cv.getContext("2d");
+var pixels = [];
+var size = 96;
+var pxSize = cv.width / size;
+var aggression;
+var aggOut = document.getElementById("agg");
+var smol = document.getElementById("smol");
+
+// Draws single pixel
+function draw(x, y){
+	c.fillStyle = pixels[x][y];
+	c.fillRect(x*pxSize, y*pxSize, pxSize, pxSize);	 
+}
+
+// Resets board
+function reset(){
+	pixels = [];
+	aggression = 0.5;
+	if(smol.checked){
+		size = 48;
+		pxSize = cv.width / size;
+	} else{
+		size = 96;
+		pxSize = cv.width / size;
+	}
+	for(var i = 0; i < size; i++){
+		pixels.push([]);
+		for(var j = 0; j < size; j++){
+			// yes i did yank this from the original
+			var col = Math.floor(Math.random() * 16777216).toString(16);
+			col = "#" + ("000000" + col).slice(-6);
+			pixels[i][j] = col;
+			draw(i, j);
+		}
+	}
+}
+
+// Advances 1 frame
+function move(){
+	var atk = []
+	// Selects random pixels to attack
+	for(var i = 0; i < size**2/2; i++){
+		atk.push([
+			Math.floor(Math.random() * size),
+			Math.floor(Math.random() * size)
+		])
+	}
+	
+	for(var j = 0; j < atk.length; j++){
+		// Attack 3 neighbors if aggression is low enough
+		if(Math.random() > aggression){
+			for(var k = 0; k < 3; k++){
+				try{
+				var neighX = atk[j][0] + Math.floor(Math.random() * 3 - 1);
+				var neighY = atk[j][1] + Math.floor(Math.random() * 3 - 1);
+				pixels[neighX][neighY] = pixels[atk[j][0]][atk[j][1]];
+				draw(neighX, neighY);
+				}
+				catch(err){}
+			}
+		}
+	}
+	// Gradually increase aggression
+	aggression *= 0.9999
+	aggOut.innerHTML = ("Aggression: " +
+	Math.round((1 - aggression) * 100).toString() + "%");
+}
+
+// Every 5 seconds, check to see if the battle has ended
+function checkReset(){
+	var initial = pixels[0][0];
+	var resetTime = true;
+	for(var i = 0; i < size; i++){
+		for(var j = 0; j < size; j++){
+			if(pixels[i][j] != initial){
+				resetTime = false;
+				break;
+			}
+		}
+		if(resetTime == false){break}
+	}
+	if(resetTime == true){reset()}
+}
+
+reset();
+setInterval(move, 40);
+setInterval(checkReset, 5000);
+
+</script>
+</body>
+</html>

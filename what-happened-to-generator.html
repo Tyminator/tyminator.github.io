@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>"What Happened To?" Generator</title>
+</head>
+
+<body>
+	<input type="text" id="prefix"></input>
+	<br>
+	<input type="number" id="num"></input>
+	<br>
+	<button onclick=generate()>GO</button>
+	<p id="output">[output]</p>
+
+	<script>
+		function generate(){
+			var prefixText = document.getElementById("prefix").value;
+			var num = document.getElementById("num").value;
+			var output = prefixText + " " + num.toString() + "? What happened to\n";
+			for(var i = 1; i < num; i++){
+				if(i == num - 1){
+					output += prefixText + " " + i.toString() + "?";
+				} else {
+					output += prefixText + " " + i.toString() + " and ";
+				}
+
+				if ((i % 6) == 0){
+					output += "\n"
+				}
+			}
+			document.getElementById("output").innerHTML = output;
+		}
+	</script>
+</body>
+</html>

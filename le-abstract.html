@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+TSOS - LE ABSTRACT (2022-04-15)
+generates box-based abstract art
+made by tyminator
+-->
+<meta charset="UTF-8">
+<html>
+<head>
+	<title>le abstract</title>
+</head>
+
+<style>
+	body{
+		background-color: black;
+		font-family: monospace;
+		color: white;
+		text-align: center;
+	}
+</style>
+
+<body>
+	<input type="number" id="lWidth" value="1"> Line width</input>
+	<br>
+	<input type="number" id="cWidth" value="500"> Canvas width</input>
+	<br>
+	<input type="number" id="cHeight" value="500"> Canvas height</input>
+	<br>
+	<input type="number" id="boxes" value="200"> Rect count</input>
+	<br>
+	<button onclick="generate()">GO</button>
+	<br>
+	<canvas id="cv">yo</canvas>
+	<script>
+		function randRGB(){
+			return (Math.floor(Math.random() * 256)).toString();
+		}
+		
+		var cv = document.getElementById("cv");
+		var c = cv.getContext("2d");
+		var lWidth = document.getElementById("lWidth");
+		var cWidth = document.getElementById("cWidth");
+		var cHeight = document.getElementById("cHeight");
+		var boxes = document.getElementById("boxes");
+		function generate(){
+			c.clearRect(0,0,cv.width,cv.height);
+			cv.width = cWidth.value;
+			cv.height = cHeight.value;
+			c.lineWidth = lWidth.value;
+			c.fillRect(0,0,cv.width,cv.height);
+			for(var i = 0; i < boxes.value; i++){
+				c.strokeStyle = "rgb(" + randRGB() + "," + randRGB() + "," + randRGB() + ")";
+				c.beginPath();
+				randX = Math.random() * cv.width;
+				randY = Math.random() * cv.height;
+				c.rect(randX, randY, Math.random() * cv.width - randX, Math.random() * cv.height - randY);
+				c.stroke();
+			}
+		}
+	</script>
+</body>
+</html>
