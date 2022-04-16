@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-TSOS - PIXEL BATTLE ROYALE (2022-04-15)
+TSOS - PIXEL BATTLE ROYALE (2022-04-16)
 a pixels fighting clone, but every
 pixels starts with a random color
 made by tyminator
@@ -61,9 +61,11 @@ function reset(){
 	for(var i = 0; i < size; i++){
 		pixels.push([]);
 		for(var j = 0; j < size; j++){
-			// yes i did yank this from the original
-			var col = Math.floor(Math.random() * 16777216).toString(16);
-			col = "#" + ("000000" + col).slice(-6);
+			var col = "#" + (
+				Math.floor(
+					Math.random() * 16777216
+				).toString(16).padStart(6, "0")
+			);
 			pixels[i][j] = col;
 			draw(i, j);
 		}
