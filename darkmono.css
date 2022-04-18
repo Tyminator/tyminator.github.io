@@ -16,3 +16,6 @@ body{
 	font-family: vcr, monospace;
 	text-align: center;
 }
+
+a:link{color: #4d4dff}
+a:visited{color: #ad4dff}
