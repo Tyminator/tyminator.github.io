@@ -1,6 +1,18 @@
+/*
+TSOS - darkmono.css
+basic dark/monospace theme
+made by tyminator
+VCR OSD MONO font made by Riciery Leal
+*/
+
+@font-face{
+	font-family: vcr;
+	src: url("assets/VCR_OSD_MONO_1.001.ttf");
+}
+
 body{
 	background-color: black;
 	color: white;
-	font-family: monospace;
+	font-family: vcr, monospace;
 	text-align: center;
 }
