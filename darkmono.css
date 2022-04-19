@@ -1,5 +1,5 @@
 /*
-TSOS - darkmono.css
+TSOS - darkmono.css (2022-04-18)
 basic dark/monospace theme
 made by tyminator
 VCR OSD MONO font made by Riciery Leal
@@ -19,3 +19,5 @@ body{
 
 a:link{color: #4d4dff}
 a:visited{color: #ad4dff}
+
+canvas{outline: white 2px solid}

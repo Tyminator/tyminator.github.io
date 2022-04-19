@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-TSOS - LINE DRAWING GENERATOR
+TSOS - LINE DRAWING GENERATOR (2022-04-18)
 just draws nonsense lines on a canvas
 made by tyminator
 -->
@@ -17,14 +17,12 @@ made by tyminator
 </style>
 <body>
 	<h1>Line Drawing Generator</h1>
-	<canvas id="cv" height="517" width="517">yo, your browser doesn't support the canvas.</canvas>
+	<canvas id="cv" height="512" width="512">yo, your browser doesn't support the canvas.</canvas>
 	<p></p>
 	<label for="lineCount">Line count: </label>
 	<input type="number" value="10" id="lineCount"></input>
 	<script>
 	var cv = document.getElementById("cv");
-	var cvWid = cv.width - 5;
-	var cvHei = cv.height - 5;
 	var cvDraw = cv.getContext("2d");
 	var lineCount;
 	function colorRand(){
@@ -41,19 +39,14 @@ made by tyminator
 	function drawing(){
 		lineCount = document.getElementById("lineCount").value;
 		cvDraw.lineWidth = 3;
-		cvDraw.clearRect(0,0,cvWid,cvHei);
+		cvDraw.clearRect(0,0,cv.width,cv.height);
 		for(var i = 0; i < lineCount; i++){
 			cvDraw.beginPath();
 			cvDraw.strokeStyle = colorRand();
-			cvDraw.moveTo((Math.random() * cvWid) + 2.5, (Math.random() * cvHei) + 2.5);
-			cvDraw.lineTo((Math.random() * cvWid) + 2.5, (Math.random() * cvHei) + 2.5);
+			cvDraw.moveTo(Math.random() * cv.width, Math.random() * cv.height);
+			cvDraw.lineTo(Math.random() * cv.width, Math.random() * cv.height);
 			cvDraw.stroke();
 		}
-		cvDraw.beginPath();
-		cvDraw.rect(0,0,cvWid + 5,cvHei + 5);
-		cvDraw.lineWidth = 10;
-		cvDraw.strokeStyle = "#ffffff";
-		cvDraw.stroke();
 	}
 	drawing();
 	setInterval(drawing, 5000);

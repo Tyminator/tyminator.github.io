@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-TSOS - BRUHDRIVER
+TSOS - BRUHDRIVER (2022-04-18)
 webdriver torso, but bruh sound effects
 made by tyminator
 -->
@@ -21,6 +21,11 @@ made by tyminator
 		var cv = document.getElementById("cv");
 		var c = cv.getContext("2d");
 		var slide = 0;
+		try{
+			var vcr = new FontFace(
+				"vcr", "../assets/VCR_OSD_MONO_1.001.ttf"
+			);
+		} catch(err){}
 
 		// Bruh sounds
 		var bruhs = [
@@ -101,7 +106,8 @@ made by tyminator
 			randRect("#0000ff");
 			randRect("#ff0000");
 			c.fillStyle = "#000000";
-			c.font = "16px VCR OSD Mono"
+			try{c.font = "16px vcr"}
+			catch(err){c.font = "16px monospace"}
 			c.fillText("bruhdriver.html - slide " +
 				slide.toString().padStart(4, "0"), 20, cv.height - 20
 			);
