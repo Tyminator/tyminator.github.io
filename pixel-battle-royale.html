@@ -22,10 +22,11 @@ made by tyminator
 <br>
 <button onclick="reset()">Reset</button>
 <br>
+<input type="number" id="dims" value="96"
+	style="width: 50px" min="2" max="480"> Size (96 or 48 recommended)</input>
+<br>
 <input type="number" id="startagg" value="50"
 	style="width: 50px" min="0" max="100"> Starting Aggression</input>
-<br>
-<input type="checkbox" id="smol"> Smaller Mode (48x48)</input>
 <br>
 <input type="checkbox" id="aggIn"> Constant Aggression</input>
 <br>
@@ -34,8 +35,8 @@ made by tyminator
 var cv = document.getElementById("battle");
 var c = cv.getContext("2d");
 var pixels = [];
-var size = 96;
-var pxSize = cv.width / size;
+var sizeIn = document.getElementById("dims");
+var pxSize, size;
 var aggression;
 var aggOut = document.getElementById("agg");
 var smol = document.getElementById("smol");
@@ -54,7 +55,7 @@ function reset(){
 	pixels = [];
 	aggression = Math.abs((startAgg.value - 100) / 100);
 	// i really gotta use these ternaries more
-	size = smol.checked ? 48 : 96;
+	size = sizeIn.value;
 	inc = incChoice.checked ? 1 : 0.9999;
 	pxSize = cv.width / size;
 	for(var i = 0; i < size; i++){
