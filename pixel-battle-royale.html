@@ -22,8 +22,12 @@ made by tyminator
 <br>
 <button onclick="reset()">Reset</button>
 <br>
-<input type="checkbox" id="smol"></input>
-<label for="smol">Smaller Mode (48x48)</label>
+<input type="number" id="startagg" value="50"
+	style="width: 50px" min="0" max="100"> Starting Aggression</input>
+<br>
+<input type="checkbox" id="smol"> Smaller Mode (48x48)</input>
+<br>
+<input type="checkbox" id="aggIn"> Constant Aggression</input>
 <br>
 <h3 id="agg">Aggression:</h3>
 <script>
@@ -35,6 +39,9 @@ var pxSize = cv.width / size;
 var aggression;
 var aggOut = document.getElementById("agg");
 var smol = document.getElementById("smol");
+var startAgg = document.getElementById("startagg");
+var incChoice = document.getElementById("aggIn");
+var inc = 0;
 
 // Draws single pixel
 function draw(x, y){
@@ -45,14 +52,11 @@ function draw(x, y){
 // Resets board
 function reset(){
 	pixels = [];
-	aggression = 0.5;
-	if(smol.checked){
-		size = 48;
-		pxSize = cv.width / size;
-	} else{
-		size = 96;
-		pxSize = cv.width / size;
-	}
+	aggression = Math.abs((startAgg.value - 100) / 100);
+	// i really gotta use these ternaries more
+	size = smol.checked ? 48 : 96;
+	inc = incChoice.checked ? 1 : 0.9999;
+	pxSize = cv.width / size;
 	for(var i = 0; i < size; i++){
 		pixels.push([]);
 		for(var j = 0; j < size; j++){
@@ -92,8 +96,8 @@ function move(){
 			}
 		}
 	}
-	// Gradually increase aggression
-	aggression *= 0.9999
+	// Gradually increase aggression (if unchecked)
+	aggression *= inc
 	aggOut.innerHTML = ("Aggression: " +
 	Math.round((1 - aggression) * 100).toString() + "%");
 }
