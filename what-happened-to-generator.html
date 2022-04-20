@@ -1,13 +1,23 @@
 <!DOCTYPE html>
+<!--
+TSOS - "WHAT HAPPENED TO" GENERATOR
+generates "x50? what happened to x1 and
+x2...and x49?" copypastas
+made by tyminator
+-->
+<meta charset="UTF-8">
 <html>
 <head>
 	<title>"What Happened To?" Generator</title>
+	<link rel="stylesheet" href="darkmono.css">
 </head>
 
 <body>
-	<input type="text" id="prefix"></input>
+	<input type="text" id="prefix"> Prefix</input>
 	<br>
-	<input type="number" id="num"></input>
+	<input type="number" id="num"> Number</input>
+	<br>
+	<input type="text" id="suffix"> Suffix</input>
 	<br>
 	<button onclick=generate()>GO</button>
 	<p id="output">[output]</p>
@@ -15,18 +25,15 @@
 	<script>
 		function generate(){
 			var prefixText = document.getElementById("prefix").value;
+			var suffixText = document.getElementById("suffix").value;
 			var num = document.getElementById("num").value;
-			var output = prefixText + " " + num.toString() + "? What happened to\n";
+			var output = prefixText + num.toString() + 
+				suffixText + "? What happened to\n";
 			for(var i = 1; i < num; i++){
-				if(i == num - 1){
-					output += prefixText + " " + i.toString() + "?";
-				} else {
-					output += prefixText + " " + i.toString() + " and ";
-				}
-
-				if ((i % 6) == 0){
-					output += "\n"
-				}
+				output += (
+					prefixText + i.toString() + suffixText + 
+					((i == num-1) ? "?" : " and ")
+				);
 			}
 			document.getElementById("output").innerHTML = output;
 		}
