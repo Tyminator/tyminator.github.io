@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>big snake.</title>
+	<link rel="stylesheet" href="darkmono.css">
+</head>
+
+<body>
+<h1>big snake.</h1>
+<canvas id="cv" width=800 height=600
+	style="outline: white 1px solid">oooof, you can't play this.</canvas>
+<br>
+<input type="checkbox" id="torus"> torus mode</input>
+<br>
+<h3 id="score">Score: 0</h3>
+<script>
+	// initalization
+	var cv = document.getElementById("cv");
+	var torus = document.getElementById("torus");
+	var scoreOut = document.getElementById("score");
+	var c = cv.getContext("2d");
+	var pxSize = 5;
+	var cvW = cv.width / pxSize;
+	var cvH = cv.height / pxSize;
+	var snek, snekLen, snekVel, prevVel, apple, score, torChoice;
+	
+	// draws pixel
+	function drawPix(col, x, y){
+		c.fillStyle = col;
+		c.fillRect(x * pxSize, y * pxSize, pxSize, pxSize);
+	}
+	
+	// resets game
+	function reset(){
+		score = 0;
+		snek = [[1, 1]];
+		snekLen = 10;
+		snekVel = [1, 0];
+		apple = [
+			Math.floor(Math.random() * cvW),
+			Math.floor(Math.random() * cvH)
+		];
+		c.clearRect(0, 0, cv.width, cv.height);
+		drawPix("#00ff00", snek[0][0], snek[0][1]);
+		drawPix("#ff0000", apple[0], apple[1]);
+		torChoice = torus.checked;
+		cv.style = "outline: white 1px " + (
+			torChoice ? "dashed" : "solid");
+	}
+	
+	// main game
+	function game(){
+		// prevents user from bypassing movement restriction
+		prevVel = snekVel;
+		// adds new square
+		snek.unshift([
+			snek[0][0] + snekVel[0],
+			snek[0][1] + snekVel[1]
+		]);
+		
+		// detects if apple has been eaten
+		if(snek[0][0] == apple[0] && 
+			snek[0][1] == apple[1]){
+			// yes i know this doesn't prevent the apple from
+			// spawning on a snake pixel at the moment, but
+			// i'm not gonna bother fixing it for now
+			apple = [
+				Math.floor(Math.random() * cvW),
+				Math.floor(Math.random() * cvH)
+			];
+			snekLen += 5;
+			score++;
+			scoreOut.innerHTML = "Score: " + score.toString();
+		}
+		
+		// self-collision detection
+		for(var i = 1; i < snek.length; i++){
+			if(snek[i][0] == snek[0][0] &&
+				snek[i][1] == snek[0][1]){
+				reset();
+			}
+		}
+		
+		// wall interaction
+		if(torChoice){
+			if(snek[0][0] < 0){snek[0][0] = cvW - 1}
+			if(snek[0][0] > cvW - 1){snek[0][0] = 0}
+			if(snek[0][1] < 0){snek[0][1] = cvH - 1}
+			if(snek[0][1] > cvH - 1){snek[0][1] = 0}
+		} else {
+			if(snek[0][0] < 0 ||
+				snek[0][0] > cvW - 1 ||
+				snek[0][1] < 0 ||
+				snek[0][1] > cvH - 1){
+					reset();
+			}
+		}
+		
+		// length limit
+		if(snek.length > snekLen){
+			c.clearRect(
+				snek[snekLen][0] * pxSize,
+				snek[snekLen][1] * pxSize,
+				pxSize, pxSize
+			);
+			snek.pop();
+		}
+		
+		// actual drawing
+		drawPix("#00ff00", snek[0][0], snek[0][1]);
+		drawPix("#ff0000", apple[0], apple[1]);
+	}
+	
+	// controls
+	function changeDir(ev){
+		switch(ev.key){
+			case "ArrowUp":
+			case "w":
+				if(prevVel[1] != 1){snekVel = [0,-1]}
+				break;
+			case "ArrowDown":
+			case "s":
+				if(prevVel[1] != -1){snekVel = [0,1]}
+				break;
+			case "ArrowLeft":
+			case "a":
+				if(prevVel[0] != 1){snekVel = [-1,0]}
+				break;
+			case "ArrowRight":
+			case "d":
+				if(prevVel[0] != -1){snekVel = [1,0]}
+				break;
+		}
+	}
+
+	// the actual game
+	window.addEventListener("keydown", changeDir);
+	reset();
+	setInterval(game, 50);
+</script>
+</body>
+</html>
