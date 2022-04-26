@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--
+	TSOS - QUICK MAFS
+	basic speed math game
+	made by tyminator
+-->
+<meta charset="UTF-8">
+<html>
+<head>
+	<title>quick mafs</title>
+	<link rel="stylesheet" href="darkmono.css">
+</head>
+
+<body>
+<h1>quick mafs</h1>
+<h2 id="eq">Ready</h2>
+<input type="number" id="answer"></input>
+<br>
+<button onclick=commit()>Answer (Enter)</button>
+<h3 id="time">Time: 0:00</h3>
+<h3 id="score">Score: 0</h3>
+<input type="number" id="min" style="width: 50px"
+min=0 value=2> Minutes</input>
+<br>
+<input type="number" id="sec" style="width: 50px"
+min=0 max=59 value=0> Seconds</input>
+<br>
+<button onclick=begin() style="width: 100px">Begin</button>
+<script>
+	var eqOut = document.getElementById("eq");
+	var timeOut = document.getElementById("time");
+	var scoreOut = document.getElementById("score");
+	var ansIn = document.getElementById("answer");
+	var minIn = document.getElementById("min");
+	var secIn = document.getElementById("sec");
+	var nums, ans, time, runInt, score = 0;
+	var running = false;
+	var types = ["+", "-", "*", "/"]
+	var typesTemp = []
+	function genEq(){
+		if(typesTemp.length == 0){
+			//typesTemp = types;
+			for(var i = 0; i < types.length; i++){
+				typesTemp.push(types[i]);
+			}
+		}
+		var type = typesTemp.splice(
+			Math.floor(Math.random() * typesTemp.length),
+			1)[0];
+		if(type != "/"){
+			nums = [
+				Math.floor(Math.random() * 100),
+				Math.floor(Math.random() * 100)
+			];
+		}
+		if(type == "+"){ans = nums[0] + nums[1]} 
+		else if(type == "-"){ans = nums[0] - nums[1]}
+		else if(type == "*"){ans = nums[0] * nums[1]}
+		else if(type == "/"){
+			nums = [null, null]
+			nums[1] = Math.ceil(Math.random() * 25);
+			nums[0] = (
+				Math.floor(Math.random() *
+				Math.floor(100 / nums[1])
+				) * nums[1]
+			);
+			ans = nums[0] / nums[1];
+		}
+		eqOut.innerHTML = (
+			nums[0].toString() +
+			type + nums[1].toString()
+		);
+	}
+
+	function commit(ev){
+		try{
+			if(ev.key == "Enter" && running){
+				if(answer.value == ans){
+					score++;
+					genEq();
+					scoreOut.innerHTML = "Score: " + 
+						score.toString();
+				}
+				answer.value = "";
+			}
+		} catch(err){
+			if(running){
+				if(answer.value == ans){
+					score++;
+					genEq();
+					scoreOut.innerHTML = "Score: " + 
+						score.toString();
+				}
+				answer.value = "";
+			}
+		}
+	}
+	
+	function updateTime(){
+		var timer = (Math.floor(time / 60).toString() + 
+			":" + (time % 60).toString().padStart(2, "0"));
+		timeOut.innerHTML = "Time: " + timer;
+		if(time == 0){
+			running = false;
+			clearInterval(runInt);
+		}
+		time--;
+	}
+	
+	function begin(){
+		if(running == false){
+			running = true;
+			time = (parseInt(minIn.value) * 60 + 
+				parseInt(secIn.value));
+			genEq();
+			window.addEventListener("keypress", commit);
+			updateTime();
+			runInt = setInterval(updateTime, 1000);
+		}
+	}
+</script>
+</body>
+</html>
