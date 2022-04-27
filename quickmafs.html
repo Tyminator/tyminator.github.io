@@ -38,9 +38,10 @@ min=0 max=59 value=0> Seconds</input>
 	var running = false;
 	var types = ["+", "-", "*", "/"]
 	var typesTemp = []
+
+	// generates random equation
 	function genEq(){
 		if(typesTemp.length == 0){
-			//typesTemp = types;
 			for(var i = 0; i < types.length; i++){
 				typesTemp.push(types[i]);
 			}
@@ -59,7 +60,7 @@ min=0 max=59 value=0> Seconds</input>
 		else if(type == "*"){ans = nums[0] * nums[1]}
 		else if(type == "/"){
 			nums = [null, null]
-			nums[1] = Math.ceil(Math.random() * 25);
+			nums[1] = Math.ceil(Math.random() * 50);
 			nums[0] = (
 				Math.floor(Math.random() *
 				Math.floor(100 / nums[1])
@@ -111,12 +112,15 @@ min=0 max=59 value=0> Seconds</input>
 	function begin(){
 		if(running == false){
 			running = true;
+			score = 0;
+			typesTemp = [];
 			time = (parseInt(minIn.value) * 60 + 
 				parseInt(secIn.value));
 			genEq();
 			window.addEventListener("keypress", commit);
 			updateTime();
 			runInt = setInterval(updateTime, 1000);
+			scoreOut.innerHTML = "Score: 0";
 		}
 	}
 </script>
