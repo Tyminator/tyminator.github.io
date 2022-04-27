@@ -73,7 +73,8 @@ min=0 max=59 value=0> Seconds</input>
 			type + nums[1].toString()
 		);
 	}
-
+	
+	// submits answer
 	function commit(ev){
 		try{
 			if(ev.key == "Enter" && running){
@@ -98,6 +99,7 @@ min=0 max=59 value=0> Seconds</input>
 		}
 	}
 	
+	// updates time counter
 	function updateTime(){
 		var timer = (Math.floor(time / 60).toString() + 
 			":" + (time % 60).toString().padStart(2, "0"));
@@ -109,6 +111,7 @@ min=0 max=59 value=0> Seconds</input>
 		time--;
 	}
 	
+	// begins game
 	function begin(){
 		if(running == false){
 			running = true;
