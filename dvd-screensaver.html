@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+	TSOS - DVD SCREENSAVER
+	primative dvd screensaver recreation
+	made by tyminator
+-->
+<meta charset="UTF-8">
+<html>
+<head>
+	<title>DVD Screensaver</title>
+	<link rel="stylesheet" href="darkmono.css">
+	<link rel="icon" href="assets/favicon.ico">
+</head>
+
+<body>
+	<canvas id="canvas" width=640 height=480
+	style="outline: white 1px solid">
+	cavas ...</canvas>
+	<script>
+	var cv = document.getElementById("canvas");
+	var c = cv.getContext("2d");
+	var x = 200, y = 200, vel = [1, 1];
+	var cols = ["#ff0000", "#00ff00", "#0000ff",
+				"#ffff00", "#00ffff", "#ff00ff"];
+	var colIn = 0;
+	var boxDims = [80, 60];
+	
+	function move(){
+		c.clearRect(0, 0, cv.width, cv.height);
+		if(x < 0 || x > cv.width - boxDims[0]){
+			vel[0] *= -1;
+			colIn++;
+		}
+		if(y < 0 || y > cv.height - boxDims[1]){
+			vel[1] *= -1;
+			colIn++;
+		}
+		if(colIn >= cols.length) colIn -= 6;
+		x += vel[0];
+		y += vel[1];
+		c.fillStyle = cols[colIn];
+		c.fillRect(x, y, boxDims[0], boxDims[1]);
+	}
+	setInterval(move, 10)
+	</script>
+</body>
+</html>
