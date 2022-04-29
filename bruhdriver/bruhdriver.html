@@ -22,12 +22,11 @@ made by tyminator
 		var cv = document.getElementById("cv");
 		var c = cv.getContext("2d");
 		var slide = 0;
-		try{
-			var vcr = new FontFace(
-				"vcr", "../assets/VCR_OSD_MONO_1.001.ttf"
-			);
-		} catch(err){}
-
+		var vcr = new FontFace(
+			"vcr", "../assets/VCR_OSD_MONO_1.001.ttf"
+		);
+		c.font = "16px vcr"
+		
 		// Bruh sounds
 		var bruhs = [
 			new Audio("bruhs/bruh01.wav"),
@@ -107,8 +106,6 @@ made by tyminator
 			randRect("#0000ff");
 			randRect("#ff0000");
 			c.fillStyle = "#000000";
-			try{c.font = "16px vcr"}
-			catch(err){c.font = "16px monospace"}
 			c.fillText("bruhdriver.html - slide " +
 				slide.toString().padStart(4, "0"), 20, cv.height - 20
 			);
