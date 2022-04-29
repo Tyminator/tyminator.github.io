@@ -16,30 +16,54 @@
 	<canvas id="canvas" width=640 height=480
 	style="outline: white 1px solid">
 	cavas ...</canvas>
+	<p id="counters">Edge hits: 0<br>Corner hits: 0</p>
 	<script>
 	var cv = document.getElementById("canvas");
 	var c = cv.getContext("2d");
-	var x = 200, y = 200, vel = [1, 1];
+	var countOut = document.getElementById("counters");
+	var x = 200, y = 200, vel = [1, 1], inc = 0;
+	var edgeHits = 0, cornerHits = 0;
 	var cols = ["#ff0000", "#00ff00", "#0000ff",
 				"#ffff00", "#00ffff", "#ff00ff"];
 	var colIn = 0;
 	var boxDims = [80, 60];
-	
+	var vcr = new FontFace("vcr", 
+		"assets/VCR_OSD_MONO_1.001.ttf");
+	c.font = "32px vcr";
+
 	function move(){
+		inc = 0;
 		c.clearRect(0, 0, cv.width, cv.height);
 		if(x < 0 || x > cv.width - boxDims[0]){
 			vel[0] *= -1;
-			colIn++;
+			inc++;
 		}
 		if(y < 0 || y > cv.height - boxDims[1]){
 			vel[1] *= -1;
-			colIn++;
+			inc++;
 		}
+		colIn += inc
 		if(colIn >= cols.length) colIn -= 6;
+		switch(inc){
+			case 1:
+				edgeHits++;
+				break;
+			case 2:
+				cornerHits++;
+				break;
+			default:
+				break;
+		}
 		x += vel[0];
 		y += vel[1];
 		c.fillStyle = cols[colIn];
 		c.fillRect(x, y, boxDims[0], boxDims[1]);
+		countOut.innerHTML = (
+			"Edge hits: " + edgeHits.toString() +
+			"<br>Corner hits: " + cornerHits.toString()
+		);
+		c.fillStyle = "#000000";
+		c.fillText("TSOS", x + 2, y + 42);
 	}
 	setInterval(move, 10)
 	</script>
