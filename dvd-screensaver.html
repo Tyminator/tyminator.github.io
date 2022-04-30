@@ -18,22 +18,51 @@
 	cavas ...</canvas>
 	<p id="counters">Edge hits: 0<br>Corner hits: 0</p>
 	<script>
+	// elements
 	var cv = document.getElementById("canvas");
 	var c = cv.getContext("2d");
 	var countOut = document.getElementById("counters");
+	// box things
 	var x = 200, y = 200, vel = [1, 1], inc = 0;
-	var edgeHits = 0, cornerHits = 0;
-	var cols = ["#ff0000", "#00ff00", "#0000ff",
-				"#ffff00", "#00ffff", "#ff00ff"];
-	var colIn = 0;
 	var boxDims = [80, 60];
+	// counters
+	var edgeHits = 0, cornerHits = 0;
+	// presentation
+	var textCol = "#000000";
 	var vcr = new FontFace("vcr", 
 		"assets/VCR_OSD_MONO_1.001.ttf");
 	c.font = "32px vcr";
-
+	
+	// generates color
+	function genColor(){
+		var rgbVals = []
+		var isBlack = false;
+		for(var i = 0; i < 3; i++){
+			rgbVals.push(
+				Math.floor(Math.random() * 256)
+			);
+			// ensures "TSOS" is visible
+			if(rgbVals[i] > 128) isBlack = true;
+		}
+		textCol = isBlack ? "#000000" : "#FFFFFF";
+		// i didn't want to do 
+		// rgbVals[0].toString(16).padStart(2, "0")
+		return(
+			"rgb(" +  rgbVals[0].toString() +
+			"," + rgbVals[1].toString() + 
+			"," + rgbVals[2].toString() + ")"
+		);
+	}
+	var col = genColor();
+	
+	// moves box
 	function move(){
+		// inc is called inc because this originally
+		// cycled through 6 colors, but it detects
+		// corner hits so it stays
 		inc = 0;
 		c.clearRect(0, 0, cv.width, cv.height);
+		// checks collision
 		if(x < 0 || x > cv.width - boxDims[0]){
 			vel[0] *= -1;
 			inc++;
@@ -42,27 +71,28 @@
 			vel[1] *= -1;
 			inc++;
 		}
-		colIn += inc
-		if(colIn >= cols.length) colIn -= 6;
+		// detects edge/corner hits, change color
 		switch(inc){
 			case 1:
 				edgeHits++;
+				col = genColor();
 				break;
 			case 2:
 				cornerHits++;
+				col = genColor();
 				break;
 			default:
 				break;
 		}
 		x += vel[0];
 		y += vel[1];
-		c.fillStyle = cols[colIn];
+		c.fillStyle = col;
 		c.fillRect(x, y, boxDims[0], boxDims[1]);
 		countOut.innerHTML = (
 			"Edge hits: " + edgeHits.toString() +
 			"<br>Corner hits: " + cornerHits.toString()
 		);
-		c.fillStyle = "#000000";
+		c.fillStyle = textCol;
 		c.fillText("TSOS", x + 2, y + 43);
 	}
 	setInterval(move, 10)
