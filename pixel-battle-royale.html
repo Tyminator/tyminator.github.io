@@ -32,6 +32,7 @@ made by tyminator
 <input type="checkbox" id="aggIn"> Constant Aggression</input>
 <br>
 <h3 id="agg">Aggression:</h3>
+<h4 id="prevWin">Previous winner: None</h4>
 <script>
 var cv = document.getElementById("battle");
 var c = cv.getContext("2d");
@@ -40,6 +41,7 @@ var sizeIn = document.getElementById("dims");
 var pxSize, size;
 var aggression;
 var aggOut = document.getElementById("agg");
+var prevOut = document.getElementById("prevWin");
 var smol = document.getElementById("smol");
 var startAgg = document.getElementById("startagg");
 var incChoice = document.getElementById("aggIn");
@@ -118,13 +120,16 @@ function checkReset(){
 		}
 		if(resetTime == false){break}
 	}
-	if(resetTime == true){reset()}
+	if(resetTime == true){
+		reset();
+		prevOut.innerHTML = "Previous winner: " + 
+			initial.toUpperCase();
+	}
 }
 
 reset();
 setInterval(move, 40);
 setInterval(checkReset, 5000);
-
 </script>
 </body>
 </html>
