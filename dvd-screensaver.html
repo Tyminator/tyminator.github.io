@@ -32,7 +32,10 @@
 	var vcr = new FontFace("vcr", 
 		"assets/VCR_OSD_MONO_1.001.ttf");
 	c.font = "32px vcr";
-	
+
+	// 1/1000 chance of using "TSUS" instead of TSOS
+	var tsusChance = Math.floor(Math.random() * 1000);
+	var boxText = (tsusChance == 621) ? "TSUS" : "TSOS";
 	// generates color
 	function genColor(){
 		var rgbVals = []
@@ -92,7 +95,7 @@
 			"<br>Corner hits: " + cornerHits.toString()
 		);
 		c.fillStyle = textCol;
-		c.fillText("TSOS", x + 2, y + 43);
+		c.fillText(boxText, x + 2, y + 43);
 	}
 	setInterval(move, 10)
 	</script>
