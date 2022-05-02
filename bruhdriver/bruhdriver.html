@@ -103,11 +103,12 @@ made by tyminator
 			c.fillStyle = "#ffffff";
 			c.fillRect(0, 0, cv.width, cv.height);
 			fuckOn = document.getElementById("fuck").checked;
+			slideDisp = ("000" + slide.toString()).slice(-4);
 			randRect("#0000ff");
 			randRect("#ff0000");
 			c.fillStyle = "#000000";
 			c.fillText("bruhdriver.html - slide " +
-				slide.toString().padStart(4, "0"), 20, cv.height - 20
+				slideDisp, 20, cv.height - 20
 			);
 			slide++;
 			if (slide >= 10000){slide = 0;}

@@ -45,8 +45,7 @@
 			if(rgbVals[i] > 128) isBlack = true;
 		}
 		textCol = isBlack ? "#000000" : "#FFFFFF";
-		// i didn't want to do 
-		// rgbVals[0].toString(16).padStart(2, "0")
+		// i didn't want to do repetitive padding on this
 		return(
 			"rgb(" +  rgbVals[0].toString() +
 			"," + rgbVals[1].toString() + 

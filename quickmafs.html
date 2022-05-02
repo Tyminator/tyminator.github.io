@@ -102,7 +102,7 @@ min=0 max=59 value=0> Seconds</input>
 	// updates time counter
 	function updateTime(){
 		var timer = (Math.floor(time / 60).toString() + 
-			":" + (time % 60).toString().padStart(2, "0"));
+			":" + ("0" + (time % 60).toString()).slice(-2));
 		timeOut.innerHTML = "Time: " + timer;
 		if(time == 0){
 			running = false;
