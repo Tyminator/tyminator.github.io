@@ -17,11 +17,13 @@
 	style="outline: white 1px solid">
 	cavas ...</canvas>
 	<p id="counters">Edge hits: 0<br>Corner hits: 0</p>
+	<input type="checkbox" id="trail"> Trail</input>
 	<script>
 	// elements
 	var cv = document.getElementById("canvas");
 	var c = cv.getContext("2d");
 	var countOut = document.getElementById("counters");
+	var trailIn = document.getElementById("trail");
 	// box things
 	var x = 200, y = 200, vel = [1, 1], inc = 0;
 	var boxDims = [80, 60];
@@ -36,6 +38,7 @@
 	// 1/1000 chance of using "TSUS" instead of TSOS
 	var tsusChance = Math.floor(Math.random() * 1000);
 	var boxText = (tsusChance == 621) ? "TSUS" : "TSOS";
+	
 	// generates color
 	function genColor(){
 		var rgbVals = []
@@ -57,13 +60,23 @@
 	}
 	var col = genColor();
 	
+	// updates every hit
+	function updateText(){
+		countOut.innerHTML = (
+			"Edge hits: " + edgeHits.toString() +
+			"<br>Corner hits: " + cornerHits.toString()
+		);
+	}
+
 	// moves box
 	function move(){
 		// inc is called inc because this originally
 		// cycled through 6 colors, but it detects
 		// corner hits so it stays
 		inc = 0;
-		c.clearRect(0, 0, cv.width, cv.height);
+		if(!trailIn.checked){
+			c.clearRect(0, 0, cv.width, cv.height);
+		}
 		// checks collision
 		if(x < 0 || x > cv.width - boxDims[0]){
 			vel[0] *= -1;
@@ -78,10 +91,12 @@
 			case 1:
 				edgeHits++;
 				col = genColor();
+				updateText();
 				break;
 			case 2:
 				cornerHits++;
 				col = genColor();
+				updateText();
 				break;
 			default:
 				break;
@@ -90,10 +105,6 @@
 		y += vel[1];
 		c.fillStyle = col;
 		c.fillRect(x, y, boxDims[0], boxDims[1]);
-		countOut.innerHTML = (
-			"Edge hits: " + edgeHits.toString() +
-			"<br>Corner hits: " + cornerHits.toString()
-		);
 		c.fillStyle = textCol;
 		c.fillText(boxText, x + 2, y + 43);
 	}
