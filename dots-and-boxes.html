@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!--
+	TSOS - DOTS AND BOXES
+	simple recreation of the
+	"dots and boxes" game
+	made by tyminator
+-->
+<meta charset="UTF-8">
+<html>
+<head>
+	<title>Dots and Boxes</title>
+	<link rel="stylesheet" href="darkmono.css">
+	<link rel="logo" href="assets/favicon.ico">
+</head>
+
+<style>
+	input{width: 75px}
+	input[type=number]{width: 50px}
+</style>
+
+<body>
+	<h1>DOTS AND BOXES</h1>
+	<canvas width=500 height=500 id="canvas">
+	browser so old it can't even load a canvas 💀<br>
+	probably can't even display the emoji either 💀💀💀
+	</canvas>
+	<h3 id="turnIndicator">Player 1's turn</h3>
+	<button onclick="startGame()">Restart</button>
+	<hr>
+	<h2>OPTIONS (applied next game)</h2>
+	<p>Grid Size</p>
+	<input type=number value=6 min=2 id="gridX"> x</input>
+	<input type=number value=6 min=2 id="gridY"></input>
+	<p>Player colors</p>
+	<input id=color1 value="#0088FF"></input>
+	<input id=color2 value="#FF8800"></input>
+	<hr>
+	<a href="index.html">Home</a>
+	<script>
+		// initial setup
+		var cv = document.getElementById("canvas");
+		var cvBox = cv.getBoundingClientRect();
+		var c = cv.getContext("2d");
+		var playerColors = ["#0088ff", "#ff8800"];
+		var gridSize = [6, 6];
+		var gridCV = [];
+		var gridArray = [];
+		var pTurn = 1;
+		var pPoints = [0,0]
+		var turnInd = document.getElementById("turnIndicator");
+		var options = [
+			document.getElementById("gridX"),
+			document.getElementById("gridY"),
+			document.getElementById("color1"),
+			document.getElementById("color2")
+		];
+		
+		// draw & configure grid
+		function drawGrid(){
+			c.fillStyle = "#ffffff";
+			for(var i = 0; i <= gridSize[1]; i++){
+				for(var j = 0; j <= gridSize[0]; j++){
+					c.beginPath();
+					c.arc(
+					(j * (480 / gridSize[0])) + 10,
+					(i * (480 / gridSize[1])) + 10,
+					7, 0, 2*Math.PI, false
+					);
+					c.closePath();
+					c.fill();
+				}
+			}
+		}
+		
+		// draws line
+		function drawLine(x, y, num){
+			var sx = x * gridCV[0] + 10;
+			var sy = y * gridCV[1] + 10;
+			c.strokeStyle = playerColors[pTurn - 1];
+			c.lineWidth = 3;
+			c.beginPath();
+			switch(num){
+				case 0:
+					c.moveTo(sx, sy);
+					c.lineTo(sx + gridCV[0], sy);
+					c.stroke();
+					break;
+				case 1:
+					c.moveTo(sx + gridCV[0], sy);
+					c.lineTo(sx + gridCV[0], sy + gridCV[1]);
+					c.stroke();
+					break;
+				case 2:
+					c.moveTo(sx + gridCV[0], sy + gridCV[1]);
+					c.lineTo(sx, sy + gridCV[1]);
+					c.stroke();
+					break;
+				case 3:
+					c.moveTo(sx, sy + gridCV[1]);
+					c.lineTo(sx, sy);
+					c.stroke();
+					break;
+				case 4:
+					c.moveTo(sx, sy);
+					c.lineTo(sx + gridCV[0], sy + gridCV[1]);
+					c.stroke();
+					break;
+				case 5:	
+					c.moveTo(sx + gridCV[0], sy);
+					c.lineTo(sx, sy + gridCV[1]);
+					c.stroke();
+					break;
+			}
+		}
+		
+		// checks if a box has been completed
+		function checkBox(x, y){
+			var isBox = true;
+			for(var i = 0; i < 4; i++){
+				if(gridArray[x][y][i] == 0){
+					isBox = false;
+					break;
+				}
+			}
+
+			if(isBox){
+				drawLine(x, y, 3 + pTurn);
+				pPoints[pTurn - 1]++;
+			}
+			return isBox;
+		}
+		
+		// does turn
+		function doTurn(evt){
+			var sqX = (evt.x - cvBox.x - 10) / gridCV[0];
+			var sqY = (evt.y - cvBox.y - 10) / gridCV[1];
+			var sqXI = Math.floor(sqX);
+			var sqYI = Math.floor(sqY);
+			var relX = sqX - sqXI;
+			var relY = sqY - sqYI;
+			var turnSwitch = true;
+
+			if(sqX < 0 || sqX >= gridSize[0] ||
+			sqY < 0 || sqY >= gridSize[1]){
+				return;
+			}
+
+			if(relY <= 0.35 && 
+			relY < relX && relY < Math.abs(relX - 1) &&
+			gridArray[sqXI][sqYI][0] == 0){
+				gridArray[sqXI][sqYI][0] = pTurn;
+				if(sqYI - 1 >= 0){
+					gridArray[sqXI][sqYI - 1][2] = pTurn;
+					if(checkBox(sqXI, sqYI - 1)) turnSwitch = false;
+				}
+				drawLine(sqXI, sqYI, 0);
+			} else if(relX >= 0.65 &&
+			relX > relY &&
+			gridArray[sqXI][sqYI][1] == 0){
+				gridArray[sqXI][sqYI][1] = pTurn;
+				if(sqXI + 1 < gridSize[0]){
+					gridArray[sqXI + 1][sqYI][3] = pTurn;
+					if(checkBox(sqXI + 1, sqYI)) turnSwitch = false;
+				}
+				drawLine(sqXI, sqYI, 1);
+			} else if(relY >= 0.65 &&
+			relY > Math.abs(relX - 1) &&
+			gridArray[sqXI][sqYI][2] == 0){
+				gridArray[sqXI][sqYI][2] = pTurn;
+				if(sqYI + 1 < gridSize[1]){
+					gridArray[sqXI][sqYI + 1][0] = pTurn;
+					if(checkBox(sqXI, sqYI + 1)) turnSwitch = false;
+				}
+				drawLine(sqXI, sqYI, 2);
+			} else if(relX <= 0.35 && 
+			gridArray[sqXI][sqYI][3] == 0){
+				gridArray[sqXI][sqYI][3] = pTurn;
+				if(sqXI - 1 >= 0){
+					gridArray[sqXI - 1][sqYI][1] = pTurn;
+					if(checkBox(sqXI - 1, sqYI)) turnSwitch = false;
+				}
+				drawLine(sqXI, sqYI, 3);
+			} else {
+				return;
+			}
+
+			if(checkBox(sqXI, sqYI)) turnSwitch = false;
+			
+			if(turnSwitch){
+				pTurn = (pTurn - 1) ? 1 : 2
+				turnInd.innerHTML = "Player " + pTurn.toString() + "'s turn";
+			}
+
+			if(pPoints[0] + pPoints[1] == gridSize[0] * gridSize[1]){
+				if(pPoints[0] > pPoints[1]){
+					turnInd.innerHTML = "Player 1 wins!";
+				} else if(pPoints[0] < pPoints[1]){
+					turnInd.innerHTML = "Player 2 wins!";
+				} else {
+					turnInd.innerHTML = "Tie!";
+				}
+			}
+		}
+
+		function startGame(){
+			gridArray = [];
+			pPoints = [0,0];
+			pTurn = 1;
+			cvBox = cv.getBoundingClientRect();
+			try {
+				gridSize[0] = options[0].value;
+				gridSize[1] = options[1].value;
+				playerColors[0] = options[2].value;
+				playerColors[1] = options[3].value;
+			} catch(err){}
+			gridCV = [
+				480 / gridSize[0],
+				480 / gridSize[1]
+			];
+			turnInd.innerHTML = "Player 1's turn";
+			c.clearRect(0,0,500,500);
+			for(var i = 0; i < gridSize[0]; i++){
+				gridArray.push([]);
+				for(var j = 0; j < gridSize[1]; j++){
+					if(i < gridSize[1]){
+						gridArray[i].push([]);
+						for(var k = 0; k < 4; k++){
+							gridArray[i][j].push(0);
+						}
+					}
+				}
+			}
+			drawGrid();
+		}
+
+		startGame();
+		cv.addEventListener("click", doTurn);
+	</script>
+</body>
+</html>
