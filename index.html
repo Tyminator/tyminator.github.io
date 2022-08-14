@@ -13,7 +13,7 @@ made by tyminator
 
 <body>
 <div style="color: #ff53b2">
-	<h1>TYMINATOR'S SITE OF STUPID</h1>
+	<h1 id="title">TYMINATOR'S SITE OF STUPID</h1>
 </div>
 <div style="color: #fff653">
 	<h4 id="randtext">this entire site requires js, sorry</h4>
@@ -44,6 +44,7 @@ made by tyminator
 <br><br>
 <a href="what-happened-to-generator.html">to generate simple copypastas?</a>
 <script>
+var titleText = document.getElementById("title");
 var randText = document.getElementById("randtext");
 var randTexts = [
 	"bruh sound effect #2",
@@ -151,11 +152,28 @@ var randTexts = [
 	"don't forget",
 	":3",
 	"h",
-	"june 21"
-]
+	"june 21",
+	"lol, lmao even",
+	"nice rubric",
+	"now's your chance"
+];
 randText.innerHTML = randTexts[
 	Math.floor(Math.random() * randTexts.length)
-]
+];
+
+var leSpooky = [
+	"Look behind you.",
+	"You have mere seconds to live.",
+	"You are going to die.",
+	"I am in your walls."
+];
+if(Math.random() < 0.001) titleText.innerHTML = "TYMINATOR'S SITE OF STPUID";
+if(Math.random() < 0.0001){
+	titleText.innerHTML = leSpooky[
+		Math.floor(Math.random() * leSpooky.length)
+	];
+	randText.innerHTML = titleText.innerHTML;
+}
 </script>
 </body>
 </html>
