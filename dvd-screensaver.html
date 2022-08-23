@@ -13,7 +13,7 @@
 </head>
 
 <body>
-	<canvas id="canvas" width=640 height=480
+	<canvas id="canvas" width=638 height=478
 	style="outline: white 1px solid">
 	cavas ...</canvas>
 	<p id="counters">Edge hits: 0<br>Corner hits: 0</p>
@@ -80,11 +80,11 @@
 			c.clearRect(0, 0, cv.width, cv.height);
 		}
 		// checks collision
-		if(x < 0 || x > cv.width - boxDims[0]){
+		if(x <= 0 || x >= cv.width - boxDims[0]){
 			vel[0] *= -1;
 			inc++;
 		}
-		if(y < 0 || y > cv.height - boxDims[1]){
+		if(y <= 0 || y >= cv.height - boxDims[1]){
 			vel[1] *= -1;
 			inc++;
 		}
